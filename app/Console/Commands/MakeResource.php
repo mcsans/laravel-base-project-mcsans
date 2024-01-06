@@ -5,21 +5,21 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
 
-class MakeService extends Command
+class MakeResource extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'make:service {name}';
+    protected $signature = 'make:resource {name}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Make a new service class';
+    protected $description = 'Make a new resource';
 
     /**
      * Execute the console command.
@@ -27,20 +27,20 @@ class MakeService extends Command
     public function handle()
     {
         $names = explode('/', $this->argument('name'));
-        $classname = end($names).'Service';
+        $endName = end($names);
+        $classname = $endName.'Resource';
 
         if (count($names) > 1) {
-            array_pop($names);
-            $namespace = 'App\\Http\\Services\\Features\\' . implode('\\', $names);
+            $namespace = 'App\\Http\\Resources\\' . implode('\\', $names);
         } else {
-            $namespace = 'App\\Http\\Services\\Features';
+            $namespace = 'App\\Http\\Resources\\' . $endName;
         }
 
-        $stubPath = resource_path('stubs/service.stub');
+        $stubPath = resource_path('stubs/resource.stub');
         $filePath = "{$namespace}/{$classname}.php";
 
         if (File::exists($filePath)) {
-            $this->components->error("Service Already Exists.");
+            $this->components->error("Resource Already Exists.");
             return false;
         }
 
@@ -51,7 +51,7 @@ class MakeService extends Command
 
         file_put_contents($filePath, $content);
 
-        $this->components->info('Service Created Successfully.');
+        $this->components->info('Resource Created Successfully.');
     }
 
     protected function createDirectories($filePath)
