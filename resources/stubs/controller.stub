@@ -1,0 +1,94 @@
+<?php
+
+namespace {{namespace}};
+
+use App\Http\Controllers\Controller;
+
+class {{classname}} extends Controller
+{
+    protected $service;
+
+    public function __construct(ServiceName $service)
+    {
+        $this->service = $service;
+    }
+
+    public function index()
+    {
+        try {
+            $examples = $this->service->indexService();
+
+            return $this->paginatedApiResponse(
+                'success',
+                'Successfully Retrieved Example Data',
+                200,
+                $examples
+            );
+        } catch (\Throwable $th) {
+            return $this->specificApiResponse('failed', $th->getMessage(), 400);
+        }
+    }
+
+    public function show($id)
+    {
+        try {
+            $example = $this->service->findService($id);
+
+            return $this->specificApiResponse(
+                'success',
+                'Successfully Retrieved Specific Example Data',
+                200,
+                $example
+            );
+        } catch (\Throwable $th) {
+            return $this->specificApiResponse('failed', $th->getMessage(), 400);
+        }
+    }
+
+    public function store(StoreValidation $request)
+    {
+        $inputData = $request->validated();
+
+        try {
+            $example = $this->service->storeService($inputData);
+
+            return $this->specificApiResponse(
+                'success',
+                'Successfully Stored Example Data',
+                201,
+                $example
+            );
+        } catch (\Throwable $th) {
+            return $this->specificApiResponse('failed', $th->getMessage(), 400);
+        }
+    }
+
+    public function update(UpdateValidation $request, $id)
+    {
+        $inputData = $request->validated();
+
+        try {
+            $example = $this->service->updateService($inputData, $id);
+
+            return $this->specificApiResponse(
+                'success',
+                'Successfully Updated Example Data',
+                200,
+                $example
+            );
+        } catch (\Throwable $th) {
+            return $this->specificApiResponse('failed', $th->getMessage(), 400);
+        }
+    }
+
+    public function destroy($id)
+    {
+        try {
+            $this->service->deleteService($id);
+
+            return $this->specificApiResponse('success', 'Example Successfully Deleted', 200);
+        } catch (\Throwable $th) {
+            return $this->specificApiResponse('failed', $th->getMessage(), 400);
+        }
+    }
+}

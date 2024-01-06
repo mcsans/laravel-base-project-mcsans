@@ -1,0 +1,21 @@
+<?php
+
+namespace {{namespace}};
+
+use App\Http\Requests\API\BaseRequestValidation;
+
+class {{classname}} extends BaseRequestValidation
+{
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
+     */
+    public function rules(): array
+    {
+        return [
+            'plant_category_id' => 'required|exists:plant_categories,id',
+            'name' => 'required|string',
+        ];
+    }
+}

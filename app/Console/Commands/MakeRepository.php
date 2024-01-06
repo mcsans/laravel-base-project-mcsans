@@ -19,15 +19,14 @@ class MakeRepository extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Make a new repository and contract';
 
     /**
      * Execute the console command.
      */
     public function handle()
     {
-        $serviceName = $this->argument('name');
-        $names = explode('/', $serviceName);
+        $names = explode('/', $this->argument('name'));
 
         $this->createContract($names);
 
@@ -58,18 +57,18 @@ class MakeRepository extends Command
         $filePath = "{$namespace}/{$classname}.php";
 
         if (File::exists($filePath)) {
-            $this->error("Contract Already Exists.");
+            $this->components->error("Contract Already Exists.");
             return false;
         }
 
-        $contractContent = file_get_contents($stubPath);
-        $contractContent = str_replace(['{{namespace}}', '{{classname}}'], [$namespace, $classname], $contractContent);
+        $content = file_get_contents($stubPath);
+        $content = str_replace(['{{namespace}}', '{{classname}}'], [$namespace, $classname], $content);
 
         $this->createDirectories($filePath);
 
-        file_put_contents($filePath, $contractContent);
+        file_put_contents($filePath, $content);
 
-        $this->info('Contract Created Successfully.');
+        $this->components->info('Contract Created Successfully.');
     }
 
     protected function createRepository($names)
@@ -90,7 +89,7 @@ class MakeRepository extends Command
         $filePath = "{$namespace}/{$classname}.php";
 
         if (File::exists($filePath)) {
-            $this->error("Repository Already Exists.");
+            $this->components->error("Repository Already Exists.");
             return false;
         }
 
@@ -101,6 +100,6 @@ class MakeRepository extends Command
 
         file_put_contents($filePath, $repositoryContent);
 
-        $this->info('Repository Created Successfully.');
+        $this->components->info('Repository Created Successfully.');
     }
 }
