@@ -4,12 +4,13 @@ namespace {{namespace}};
 
 use App\Http\Repositories\BaseRepository;
 use {{contractNamespace}};
+use {{modelNamespace}};
 
 class {{classname}} extends BaseRepository implements {{contract}}
 {
     protected $model;
 
-    public function __construct(ModelName $model)
+    public function __construct({{model}} $model)
     {
         parent::__construct($model);
         $this->model = $model;

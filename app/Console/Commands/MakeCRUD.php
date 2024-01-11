@@ -58,7 +58,7 @@ class MakeCRUD extends Command
         }
 
         if (!File::exists("App\\Http\\Repositories\\{$name}Repository.php")) {
-            exec("php artisan make:repository-contract {$name}");
+            exec("php artisan make:repository-contract {$name} --model={$endName}");
             $this->components->info('Repository-Contract Created Successfully.');
         } else {
             $this->components->error('Repository-Contract already exists.');

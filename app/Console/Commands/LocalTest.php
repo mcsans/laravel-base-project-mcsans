@@ -55,7 +55,7 @@ class LocalTest extends Command
         }
 
         try {
-            $result = exec('php artisan migrate:fresh');
+            $result = shell_exec('php artisan migrate:fresh');
             $this->info($result);
             $this->info('Migrations Successfully Executed <3');
         } catch (\Throwable $th) {
@@ -72,8 +72,13 @@ class LocalTest extends Command
             $this->info('Passport Key Generated <3');
         }
 
-        exec('php artisan db:seed --class=UnitTestingSeeder');
-        $this->info('Seeder Successfully Added <3');
+        try {
+            $result = shell_exec('php artisan db:seed --class=UnitTestingSeeder');
+            $this->info($result);
+            $this->info('Seeder Successfully Added <3');
+        } catch (\Throwable $th) {
+            $this->error('Oh no, there\'s something wrong with seeder.');
+        }
 
         try {
             $result = shell_exec('php artisan test --stop-on-failure --log-junit storage/logs/testing/tests.xml');

@@ -12,7 +12,7 @@ class MakeRepository extends Command
      *
      * @var string
      */
-    protected $signature = 'make:repository-contract {name}';
+    protected $signature = 'make:repository-contract {name} {--model=}';
 
     /**
      * The console command description.
@@ -73,6 +73,7 @@ class MakeRepository extends Command
 
     protected function createRepository($names)
     {
+        $model = $this->option('model');
         $contract = end($names).'Contract';
         $classname = end($names).'Repository';
 
@@ -80,12 +81,15 @@ class MakeRepository extends Command
             array_pop($names);
             $namespace = 'App\\Http\\Repositories\\' . implode('\\', $names);
             $contractNamespace = 'App\\Http\\Repositories\\Contracts\\' . implode('\\', $names) . '\\' . $contract;
+            $modelNamespace = 'App\\Models\\' . implode('\\', $names) . '\\' . $model;
         } else {
             $namespace = 'App\\Http\\Repositories';
             $contractNamespace = 'App\\Http\\Repositories\\Contracts' . '\\' . $contract;
+            $modelNamespace = 'App\\Models' . '\\' . $model;
         }
 
         $stubPath = resource_path('stubs/repository.stub');
+        $stubPathModel = resource_path('stubs/repository-model.stub');
         $filePath = "{$namespace}/{$classname}.php";
 
         if (File::exists($filePath)) {
@@ -93,8 +97,13 @@ class MakeRepository extends Command
             return false;
         }
 
-        $repositoryContent = file_get_contents($stubPath);
-        $repositoryContent = str_replace(['{{namespace}}', '{{contractNamespace}}', '{{classname}}', '{{contract}}'], [$namespace, $contractNamespace, $classname, $contract], $repositoryContent);
+        if (!$this->option('model')) {
+            $repositoryContent = file_get_contents($stubPath);
+            $repositoryContent = str_replace(['{{namespace}}', '{{contractNamespace}}', '{{classname}}', '{{contract}}'], [$namespace, $contractNamespace, $classname, $contract], $repositoryContent);
+        } else {
+            $repositoryContent = file_get_contents($stubPathModel);
+            $repositoryContent = str_replace(['{{namespace}}', '{{contractNamespace}}', '{{modelNamespace}}', '{{classname}}', '{{contract}}', '{{model}}'], [$namespace, $contractNamespace, $modelNamespace, $classname, $contract, $model], $repositoryContent);
+        }
 
         $this->createDirectories($filePath);
 
