@@ -6,9 +6,9 @@ class {{classname}}
 {
     protected $repository;
 
-    public function __construct(Contract $exampleRepository)
+    public function __construct(ExampleContract ${{variable}}Repository)
     {
-        $this->repository = $exampleRepository;
+        $this->repository = ${{variable}}Repository;
     }
 
     protected function payload($request)
@@ -20,27 +20,30 @@ class {{classname}}
         return $payloads;
     }
 
-    public function indexService()
+    public function indexService(array $request)
     {
-        $examples = $this->repository->all();
+        ${{pluralVariable}} = $this->repository->all();
 
-        return Resource::collection($examples);
+        // if using search by keyword
+        // ${{pluralVariable}} = $this->repository->indexSearch($request);
+
+        return ExampleResource::collection(${{pluralVariable}});
     }
 
     public function findService($id)
     {
-        $example = $this->repository->find($id);
+        ${{variable}} = $this->repository->find($id);
 
-        return new Resource($example);
+        return new ExampleResource(${{variable}});
     }
 
     public function storeService(array $request)
     {
         $inputData = $this->payload($request);
 
-        $example = $this->repository->store($inputData);
+        ${{variable}} = $this->repository->store($inputData);
 
-        return new Resource($example);
+        return new ExampleResource(${{variable}});
     }
 
     public function updateService(array $request, $id)

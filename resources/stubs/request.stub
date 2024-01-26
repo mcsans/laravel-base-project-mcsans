@@ -14,8 +14,15 @@ class {{classname}} extends BaseRequestValidation
     public function rules(): array
     {
         return [
-            'plant_category_id' => 'required|exists:plant_categories,id',
-            'name' => 'required|string',
+            'page' => 'sometimes|integer|min:1',
+            'per_page' => 'sometimes|integer|min:1',
+            'search' => 'sometimes|string',
+            'sort_by' => 'sometimes|string',
+            'sort_direction' => 'sometimes|string|in:asc,desc',
+
+            'category_id' => 'required|exists:product_categories,id', // required category_id where exists in table product_categories
+            'name' => 'required|string|unique:products,name', // unique for store
+            'name' => 'required|string|unique:products,name,'.request()->route('id'), // unique for update
         ];
     }
 }

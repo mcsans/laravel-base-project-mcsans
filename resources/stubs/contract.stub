@@ -4,5 +4,5 @@ namespace {{namespace}};
 
 interface {{classname}}
 {
-    //
+    public function indexSearch(array $request);
 }

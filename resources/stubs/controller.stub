@@ -8,21 +8,23 @@ class {{classname}} extends Controller
 {
     protected $service;
 
-    public function __construct(ServiceName $service)
+    public function __construct(ExampleService $service)
     {
         $this->service = $service;
     }
 
-    public function index()
+    public function index(IndexExampleValidation $request)
     {
+        $params = $request->validated();
+
         try {
-            $examples = $this->service->indexService();
+            ${{pluralVariable}} = $this->service->indexService($params);
 
             return $this->paginatedApiResponse(
                 'success',
                 'Successfully Retrieved Example Data',
                 200,
-                $examples
+                ${{pluralVariable}}
             );
         } catch (\Throwable $th) {
             return $this->specificApiResponse('failed', $th->getMessage(), 400);
@@ -32,49 +34,49 @@ class {{classname}} extends Controller
     public function show($id)
     {
         try {
-            $example = $this->service->findService($id);
+            ${{variable}} = $this->service->findService($id);
 
             return $this->specificApiResponse(
                 'success',
                 'Successfully Retrieved Specific Example Data',
                 200,
-                $example
+                ${{variable}}
             );
         } catch (\Throwable $th) {
             return $this->specificApiResponse('failed', $th->getMessage(), 400);
         }
     }
 
-    public function store(StoreValidation $request)
+    public function store(StoreExampleValidation $request)
     {
         $inputData = $request->validated();
 
         try {
-            $example = $this->service->storeService($inputData);
+            ${{variable}} = $this->service->storeService($inputData);
 
             return $this->specificApiResponse(
                 'success',
                 'Successfully Stored Example Data',
                 201,
-                $example
+                ${{variable}}
             );
         } catch (\Throwable $th) {
             return $this->specificApiResponse('failed', $th->getMessage(), 400);
         }
     }
 
-    public function update(UpdateValidation $request, $id)
+    public function update(UpdateExampleValidation $request, $id)
     {
         $inputData = $request->validated();
 
         try {
-            $example = $this->service->updateService($inputData, $id);
+            ${{variable}} = $this->service->updateService($inputData, $id);
 
             return $this->specificApiResponse(
                 'success',
                 'Successfully Updated Example Data',
                 200,
-                $example
+                ${{variable}}
             );
         } catch (\Throwable $th) {
             return $this->specificApiResponse('failed', $th->getMessage(), 400);

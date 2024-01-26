@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 
 class MakeRepository extends Command
 {
@@ -77,6 +78,9 @@ class MakeRepository extends Command
         $contract = end($names).'Contract';
         $classname = end($names).'Repository';
 
+        $variable = strtolower(end($names));
+        $pluralVariable = Str::plural($variable);
+
         if (count($names) > 1) {
             array_pop($names);
             $namespace = 'App\\Http\\Repositories\\' . implode('\\', $names);
@@ -99,10 +103,10 @@ class MakeRepository extends Command
 
         if (!$this->option('model')) {
             $repositoryContent = file_get_contents($stubPath);
-            $repositoryContent = str_replace(['{{namespace}}', '{{contractNamespace}}', '{{classname}}', '{{contract}}'], [$namespace, $contractNamespace, $classname, $contract], $repositoryContent);
+            $repositoryContent = str_replace(['{{namespace}}', '{{contractNamespace}}', '{{classname}}', '{{contract}}', '{{variable}}', '{{pluralVariable}}'], [$namespace, $contractNamespace, $classname, $contract, $variable, $pluralVariable], $repositoryContent);
         } else {
             $repositoryContent = file_get_contents($stubPathModel);
-            $repositoryContent = str_replace(['{{namespace}}', '{{contractNamespace}}', '{{modelNamespace}}', '{{classname}}', '{{contract}}', '{{model}}'], [$namespace, $contractNamespace, $modelNamespace, $classname, $contract, $model], $repositoryContent);
+            $repositoryContent = str_replace(['{{namespace}}', '{{contractNamespace}}', '{{modelNamespace}}', '{{classname}}', '{{contract}}', '{{model}}', '{{variable}}', '{{pluralVariable}}'], [$namespace, $contractNamespace, $modelNamespace, $classname, $contract, $model, $variable, $pluralVariable], $repositoryContent);
         }
 
         $this->createDirectories($filePath);

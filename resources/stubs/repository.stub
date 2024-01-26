@@ -7,11 +7,31 @@ use {{contractNamespace}};
 
 class {{classname}} extends BaseRepository implements {{contract}}
 {
-    protected $model;
+    protected ${{variable}};
 
-    public function __construct(ModelName $model)
+    public function __construct(ModelName ${{variable}})
     {
-        parent::__construct($model);
-        $this->model = $model;
+        parent::__construct(${{variable}});
+        $this->{{variable}} = ${{variable}};
+    }
+
+    public function indexSearch(array $request)
+    {
+        $sort_order = $request['sort_order'] ?? 'asc';
+        $sort_field = $request['sort_field'] ?? 'created_at';
+        $search = $request['search'] ?? null;
+
+        $query = $this->{{variable}}
+            ->orderBy($sort_field, $sort_order);
+
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('code', 'LIKE', '%' . $search . '%')
+                    ->orWhere('name', 'LIKE', '%' . $search . '%')
+                    ->orWhere('created_at', 'LIKE', '%' . $search . '%');
+            });
+        }
+
+        return $query->get();
     }
 }

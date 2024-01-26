@@ -28,10 +28,11 @@ class MakeRequest extends Command
     {
         $names = explode('/', $this->argument('name'));
 
-        $this->storeRequestValidation($names);
+        $this->createRequestValidation($names, 'Index');
 
-        $this->updateRequestValidation($names);
+        $this->createRequestValidation($names, 'Store');
 
+        $this->createRequestValidation($names, 'Update');
     }
 
     protected function createDirectories($filePath)
@@ -43,10 +44,10 @@ class MakeRequest extends Command
         }
     }
 
-    public function storeRequestValidation($names)
+    public function createRequestValidation($names, $process)
     {
         $endName = end($names);
-        $classname = "Store{$endName}Request";
+        $classname = "{$process}{$endName}Request";
 
         if (count($names) > 1) {
             $namespace = 'App\\Http\\Requests\\API\\' . implode('\\', $names);
@@ -58,7 +59,7 @@ class MakeRequest extends Command
         $filePath = "{$namespace}/{$classname}.php";
 
         if (File::exists($filePath)) {
-            $this->components->error("Request Already Exists.");
+            $this->components->error("{$process} Request Already Exists.");
             return false;
         }
 
@@ -69,35 +70,6 @@ class MakeRequest extends Command
 
         file_put_contents($filePath, $content);
 
-        $this->components->info('Request Created Successfully.');
-    }
-
-    public function updateRequestValidation($names)
-    {
-        $endName = end($names);
-        $classname = "Update{$endName}Request";
-
-        if (count($names) > 1) {
-            $namespace = 'App\\Http\\Requests\\API\\' . implode('\\', $names);
-        } else {
-            $namespace = 'App\\Http\\Requests\\API\\' . $endName;
-        }
-
-        $stubPath = resource_path('stubs/request.stub');
-        $filePath = "{$namespace}/{$classname}.php";
-
-        if (File::exists($filePath)) {
-            $this->components->error("Store Request Already Exists.");
-            return false;
-        }
-
-        $content = file_get_contents($stubPath);
-        $content = str_replace(['{{namespace}}', '{{classname}}'], [$namespace, $classname], $content);
-
-        $this->createDirectories($filePath);
-
-        file_put_contents($filePath, $content);
-
-        $this->components->info('Update Request Created Successfully.');
+        $this->components->info("{$process} Request Created Successfully.");
     }
 }

@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 
 class MakeController extends Command
 {
@@ -29,6 +30,9 @@ class MakeController extends Command
         $names = explode('/', $this->argument('name'));
         $classname = end($names).'Controller';
 
+        $variable = strtolower(end($names));
+        $pluralVariable = Str::plural($variable);
+
         if (count($names) > 1) {
             array_pop($names);
             $namespace = 'App\\Http\\Controllers\\API\\' . implode('\\', $names);
@@ -45,7 +49,7 @@ class MakeController extends Command
         }
 
         $content = file_get_contents($stubPath);
-        $content = str_replace(['{{namespace}}', '{{classname}}'], [$namespace, $classname], $content);
+        $content = str_replace(['{{namespace}}', '{{classname}}', '{{variable}}', '{{pluralVariable}}'], [$namespace, $classname, $variable, $pluralVariable], $content);
 
         $this->createDirectories($filePath);
 
