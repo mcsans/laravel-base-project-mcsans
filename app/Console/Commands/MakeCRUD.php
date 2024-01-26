@@ -12,7 +12,7 @@ class MakeCRUD extends Command
      *
      * @var string
      */
-    protected $signature = 'make:crud {name}';
+    protected $signature = 'make:mc-crud {name}';
 
     /**
      * The console command description.
@@ -42,7 +42,7 @@ class MakeCRUD extends Command
         }
 
         if (!File::exists("App\\Http\\Controllers\\API\\{$name}Controller.php")) {
-            exec("php artisan make:controller {$name}");
+            exec("php artisan make:mc-controller {$name}");
             $this->components->info('Controller Created Successfully.');
         } else {
             $this->components->error('Controller already exists.');
@@ -50,7 +50,7 @@ class MakeCRUD extends Command
         }
 
         if (!File::exists("App\\Http\\Services\\Features\\{$name}Service.php")) {
-            exec("php artisan make:service {$name}");
+            exec("php artisan make:mc-service {$name}");
             $this->components->info('Service Created Successfully.');
         } else {
             $this->components->error('Service already exists.');
@@ -58,7 +58,7 @@ class MakeCRUD extends Command
         }
 
         if (!File::exists("App\\Http\\Repositories\\{$name}Repository.php")) {
-            exec("php artisan make:repository-contract {$name} --model={$endName}");
+            exec("php artisan make:mc-repository-contract {$name} --model={$endName}");
             $this->components->info('Repository-Contract Created Successfully.');
         } else {
             $this->components->error('Repository-Contract already exists.');
@@ -66,7 +66,7 @@ class MakeCRUD extends Command
         }
 
         if (!File::exists("App\\Http\\Requests\\API\\{$name}\\Store{$endName}Validation.php")) {
-            exec("php artisan make:request {$name}");
+            exec("php artisan make:mc-request {$name}");
             $this->components->info('Store-Update Request Created Successfully.');
         } else {
             $this->components->error('Request already exists.');
@@ -74,7 +74,7 @@ class MakeCRUD extends Command
         }
 
         if (!File::exists("App\\Http\\Resources\\{$name}\\{$endName}Resource.php")) {
-            exec("php artisan make:resource {$name}");
+            exec("php artisan make:mc-resource {$name}");
             $this->components->info('Resource Created Successfully.');
         } else {
             $this->components->error('Resource already exists.');

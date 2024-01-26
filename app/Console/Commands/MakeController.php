@@ -13,7 +13,7 @@ class MakeController extends Command
      *
      * @var string
      */
-    protected $signature = 'make:controller {name}';
+    protected $signature = 'make:mc-controller {name}';
 
     /**
      * The console command description.

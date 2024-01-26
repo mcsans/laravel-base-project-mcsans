@@ -12,7 +12,7 @@ class MakeRequest extends Command
      *
      * @var string
      */
-    protected $signature = 'make:request {name}';
+    protected $signature = 'make:mc-request {name}';
 
     /**
      * The console command description.

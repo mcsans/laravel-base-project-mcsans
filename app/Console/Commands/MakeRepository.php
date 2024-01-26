@@ -13,7 +13,7 @@ class MakeRepository extends Command
      *
      * @var string
      */
-    protected $signature = 'make:repository-contract {name} {--model=}';
+    protected $signature = 'make:mc-repository-contract {name} {--model=}';
 
     /**
      * The console command description.
