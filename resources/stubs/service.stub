@@ -22,10 +22,7 @@ class {{classname}}
 
     public function indexService(array $request)
     {
-        ${{pluralVariable}} = $this->repository->all();
-
-        // if using search by keyword
-        // ${{pluralVariable}} = $this->repository->indexSearch($request);
+        ${{pluralVariable}} = $this->repository->indexSearch($request);
 
         return ExampleResource::collection(${{pluralVariable}});
     }

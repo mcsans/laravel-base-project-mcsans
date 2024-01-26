@@ -24,9 +24,9 @@ class PlantCategoryService
         return $payloads;
     }
 
-    public function indexService()
+    public function indexService(array $request)
     {
-        $plantCategories = $this->repository->all();
+        $plantCategories = $this->repository->indexSearch($request);
 
         return PlantCategoryResource::collection($plantCategories);
     }

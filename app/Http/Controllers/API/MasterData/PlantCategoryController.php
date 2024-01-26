@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\API\MasterData;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\API\MasterData\PlantCategory\IndexPlantCategoryValidation;
 use App\Http\Requests\API\MasterData\PlantCategory\StorePlantCategoryValidation;
 use App\Http\Requests\API\MasterData\PlantCategory\UpdatePlantCategoryValidation;
 use App\Http\Services\Features\MasterData\PlantCategoryService;
+use App\Models\MasterData\PlantCategory;
 
 class PlantCategoryController extends Controller
 {
@@ -16,10 +18,12 @@ class PlantCategoryController extends Controller
         $this->service = $service;
     }
 
-    public function index()
+    public function index(IndexPlantCategoryValidation $request)
     {
+        $params = $request->validated();
+
         try {
-            $plantCategories = $this->service->indexService();
+            $plantCategories = $this->service->indexService($params);
 
             return $this->paginatedApiResponse(
                 'success',
